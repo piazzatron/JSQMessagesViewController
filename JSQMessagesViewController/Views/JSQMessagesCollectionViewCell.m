@@ -204,6 +204,7 @@ static NSMutableSet *jsqMessagesCollectionViewCellActions = nil;
     if ([self isKindOfClass:[JSQMessagesCollectionViewCellIncoming class]]) {
         self.avatarViewSize = customAttributes.incomingAvatarViewSize;
     }
+    
     else if ([self isKindOfClass:[JSQMessagesCollectionViewCellOutgoing class]]) {
         self.avatarViewSize = customAttributes.outgoingAvatarViewSize;
     }

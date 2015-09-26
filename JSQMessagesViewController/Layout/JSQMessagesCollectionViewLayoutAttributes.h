@@ -79,6 +79,7 @@
  */
 @property (assign, nonatomic) CGSize outgoingAvatarViewSize;
 
+@property (assign, nonatomic) CGSize operatorAvatarViewSize;
 /**
  *  The height of the `cellTopLabel` of a `JSQMessagesCollectionViewCell`.
  *  This value should be greater than or equal to `0.0`.

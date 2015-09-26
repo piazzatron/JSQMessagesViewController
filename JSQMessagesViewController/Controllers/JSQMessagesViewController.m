@@ -464,6 +464,7 @@ static void * kJSQMessagesKeyValueObservingContext = &kJSQMessagesKeyValueObserv
     NSParameterAssert(messageSenderId != nil);
 
     BOOL isOutgoingMessage = [messageSenderId isEqualToString:self.senderId];
+    BOOL isOperatorMessage = [messageSenderId isEqualToString: @"operator"];
     BOOL isMediaMessage = [messageItem isMediaMessage];
 
     NSString *cellIdentifier = nil;
@@ -471,7 +472,11 @@ static void * kJSQMessagesKeyValueObservingContext = &kJSQMessagesKeyValueObserv
         cellIdentifier = isOutgoingMessage ? self.outgoingMediaCellIdentifier : self.incomingMediaCellIdentifier;
     }
     else {
-        cellIdentifier = isOutgoingMessage ? self.outgoingCellIdentifier : self.incomingCellIdentifier;
+        if (isOperatorMessage) {
+            cellIdentifier = @"operatorCell";
+        } else {
+            cellIdentifier = isOutgoingMessage ? self.outgoingCellIdentifier : self.incomingCellIdentifier;
+        }
     }
 
     JSQMessagesCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
