@@ -107,16 +107,26 @@
                                                              context:nil];
 
         CGSize stringSize = CGRectIntegral(stringRect).size;
+        
+        /*
+         From the docs about 'boundingRectWithSize...':
+         
+         "This method returns the actual bounds of the glyphs in the string. Some of the glyphs (spaces, for example) are allowed to overlap the layout constraints specified by the size passed in, so in some cases the width value of the size component of the returned CGRect can exceed the width value of the size parameter."
+         
+         The text will fit in the bounding width, even if the returned rect is larger than that width. Thus, we should make sure that the size
+         we are using for the text view is NOT larger than the size we claimed we would bound the text with.
+         */
+        
+        if (stringSize.width > maximumTextWidth) {
+            stringSize.width = maximumTextWidth;
+        }
 
         CGFloat verticalContainerInsets = layout.messageBubbleTextViewTextContainerInsets.top + layout.messageBubbleTextViewTextContainerInsets.bottom;
         CGFloat verticalFrameInsets = layout.messageBubbleTextViewFrameInsets.top + layout.messageBubbleTextViewFrameInsets.bottom;
 
-        //  add extra 2 points of space, because `boundingRectWithSize:` is slightly off
-        //  not sure why. magix. (shrug) if you know, submit a PR
-        CGFloat verticalInsets = verticalContainerInsets + verticalFrameInsets + 2.0f;
+        CGFloat verticalInsets = verticalContainerInsets + verticalFrameInsets;
 
-        //  same as above, an extra 2 points of magix
-        CGFloat finalWidth = MAX(stringSize.width + horizontalInsetsTotal, self.minimumBubbleWidth) + 2.0f;
+        CGFloat finalWidth = MAX(stringSize.width + horizontalInsetsTotal - spacingBetweenAvatarAndBubble, self.minimumBubbleWidth);
 
         finalSize = CGSizeMake(finalWidth, stringSize.height + verticalInsets);
     }
